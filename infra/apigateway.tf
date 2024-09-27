@@ -26,11 +26,25 @@ resource "aws_apigatewayv2_integration" "eks" {
   connection_id      = aws_apigatewayv2_vpc_link.eks.id
 }
 
-resource "aws_apigatewayv2_route" "get_echo" {
+resource "aws_apigatewayv2_route" "geral" {
   api_id = aws_apigatewayv2_api.apifiap.id
 
   route_key = "ANY /totem/{proxy+}"
+  target    = "integrations/${aws_apigatewayv2_integration.eks.id}/{proxy+}"
+}
+
+resource "aws_apigatewayv2_route" "teste" {
+  api_id = aws_apigatewayv2_api.apifiap.id
+
+  route_key = "ANY /api"
   target    = "integrations/${aws_apigatewayv2_integration.eks.id}/api"
+}
+
+resource "aws_apigatewayv2_route" "teste2" {
+  api_id = aws_apigatewayv2_api.apifiap.id
+
+  route_key = "ANY /api2"
+  target    = "integrations/${aws_apigatewayv2_integration.eks.id}:3000/api"
 }
 
 output "hello_base_url" {
