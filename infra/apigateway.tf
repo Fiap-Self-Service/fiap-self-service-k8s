@@ -26,14 +26,6 @@ resource "aws_api_gateway_integration" "proxy_integration" {
   uri = "http://a55fb585ed9f94fc399f66f3f60f5e96-913860324.us-east-1.elb.amazonaws.com:3000/{proxy}"
 }
 
-resource "aws_api_gateway_deployment" "my_api_deployment" {
-  depends_on = [
-    aws_api_gateway_integration.proxy_integration
-  ]
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  stage_name  = "v1"
-}
-
 resource "aws_api_gateway_stage" "my_api_stage" {
   rest_api_id  = aws_api_gateway_rest_api.my_api.id
   stage_name   = "v1"
