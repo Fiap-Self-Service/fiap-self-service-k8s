@@ -32,30 +32,29 @@ resource "aws_api_gateway_integration" "proxy_integration" {
 
 # Modelo de resposta vazio
 resource "aws_api_gateway_model" "empty_model" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  name        = "EmptyModel"
+  rest_api_id  = aws_api_gateway_rest_api.my_api.id
+  name         = "EmptyModel"
   content_type = "application/json"
   schema = jsonencode({
-    type = "object"
+    type       = "object"
     properties = {}
   })
 }
 
 # 200 Response
 resource "aws_api_gateway_method_response" "proxy_method_response_200" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  resource_id = aws_api_gateway_resource.proxy.id
-  http_method = aws_api_gateway_method.proxy_method.http_method
-  status_code = "200"
-
+  rest_api_id     = aws_api_gateway_rest_api.my_api.id
+  resource_id     = aws_api_gateway_resource.proxy.id
+  http_method     = aws_api_gateway_method.proxy_method.http_method
+  status_code     = "200"
   response_model_id = aws_api_gateway_model.empty_model.id
 }
 
 resource "aws_api_gateway_integration_response" "proxy_integration_response_200" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  resource_id = aws_api_gateway_resource.proxy.id
-  http_method = aws_api_gateway_method.proxy_method.http_method
-  status_code = "200"
+  rest_api_id     = aws_api_gateway_rest_api.my_api.id
+  resource_id     = aws_api_gateway_resource.proxy.id
+  http_method     = aws_api_gateway_method.proxy_method.http_method
+  status_code     = "200"
 
   response_parameters = {
     "method.response.header.Content-Type" = "integration.response.header.Content-Type"
@@ -68,19 +67,18 @@ resource "aws_api_gateway_integration_response" "proxy_integration_response_200"
 
 # 201 Response
 resource "aws_api_gateway_method_response" "proxy_method_response_201" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  resource_id = aws_api_gateway_resource.proxy.id
-  http_method = aws_api_gateway_method.proxy_method.http_method
-  status_code = "201"
-
+  rest_api_id     = aws_api_gateway_rest_api.my_api.id
+  resource_id     = aws_api_gateway_resource.proxy.id
+  http_method     = aws_api_gateway_method.proxy_method.http_method
+  status_code     = "201"
   response_model_id = aws_api_gateway_model.empty_model.id
 }
 
 resource "aws_api_gateway_integration_response" "proxy_integration_response_201" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  resource_id = aws_api_gateway_resource.proxy.id
-  http_method = aws_api_gateway_method.proxy_method.http_method
-  status_code = "201"
+  rest_api_id     = aws_api_gateway_rest_api.my_api.id
+  resource_id     = aws_api_gateway_resource.proxy.id
+  http_method     = aws_api_gateway_method.proxy_method.http_method
+  status_code     = "201"
 
   response_parameters = {
     "method.response.header.Content-Type" = "integration.response.header.Content-Type"
@@ -93,19 +91,18 @@ resource "aws_api_gateway_integration_response" "proxy_integration_response_201"
 
 # 400 Response
 resource "aws_api_gateway_method_response" "proxy_method_response_400" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  resource_id = aws_api_gateway_resource.proxy.id
-  http_method = aws_api_gateway_method.proxy_method.http_method
-  status_code = "400"
-
+  rest_api_id     = aws_api_gateway_rest_api.my_api.id
+  resource_id     = aws_api_gateway_resource.proxy.id
+  http_method     = aws_api_gateway_method.proxy_method.http_method
+  status_code     = "400"
   response_model_id = aws_api_gateway_model.empty_model.id
 }
 
 resource "aws_api_gateway_integration_response" "proxy_integration_response_400" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  resource_id = aws_api_gateway_resource.proxy.id
-  http_method = aws_api_gateway_method.proxy_method.http_method
-  status_code = "400"
+  rest_api_id     = aws_api_gateway_rest_api.my_api.id
+  resource_id     = aws_api_gateway_resource.proxy.id
+  http_method     = aws_api_gateway_method.proxy_method.http_method
+  status_code     = "400"
 
   response_parameters = {
     "method.response.header.Content-Type" = "integration.response.header.Content-Type"
@@ -131,7 +128,7 @@ resource "aws_api_gateway_deployment" "my_api_deployment" {
 }
 
 resource "aws_api_gateway_stage" "my_api_stage" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  stage_name  = "v1"
+  rest_api_id  = aws_api_gateway_rest_api.my_api.id
+  stage_name   = "v1"
   deployment_id = aws_api_gateway_deployment.my_api_deployment.id
 }
