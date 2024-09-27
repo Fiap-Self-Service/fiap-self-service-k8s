@@ -14,6 +14,10 @@ resource "aws_api_gateway_method" "proxy_method" {
   resource_id   = aws_api_gateway_resource.proxy.id
   http_method   = "ANY"
   authorization = "NONE"
+
+  request_parameters = {
+    "method.request.path.proxy" = true  # Aqui está a definição correta
+  }
 }
 
 resource "aws_api_gateway_integration" "proxy_integration" {
@@ -22,11 +26,11 @@ resource "aws_api_gateway_integration" "proxy_integration" {
   http_method             = aws_api_gateway_method.proxy_method.http_method
   integration_http_method = "ANY"
   type                    = "HTTP"
-  
+
   uri                     = "http://a7c7c084d283b4e76ab8ef40afc61122-ffa958cf9616c2e2.elb.us-east-1.amazonaws.com:3000/{proxy}"
 
   request_parameters = {
-    "integration.request.path.proxy" = "method.request.path.proxy"
+    "integration.request.path.proxy" = "{proxy}"  # Mapeamento correto
   }
 
   request_templates = {
