@@ -23,7 +23,11 @@ resource "aws_api_gateway_integration" "proxy_integration" {
   integration_http_method = "ANY"
   type                    = "HTTP"
 
-  uri                     = "http://a55fb585ed9f94fc399f66f3f60f5e96-913860324.us-east-1.elb.amazonaws.com:3000/{proxy}"
+  uri = "http://a55fb585ed9f94fc399f66f3f60f5e96-913860324.us-east-1.elb.amazonaws.com:3000/{proxy}"
+
+  request_parameters = {
+    "integration.request.path.proxy" = "{proxy}"
+  }
 }
 
 # Modelo de resposta vazio
@@ -39,10 +43,10 @@ resource "aws_api_gateway_model" "empty_model" {
 
 # 200 Response
 resource "aws_api_gateway_method_response" "proxy_method_response_200" {
-  rest_api_id     = aws_api_gateway_rest_api.my_api.id
-  resource_id     = aws_api_gateway_resource.proxy.id
-  http_method     = aws_api_gateway_method.proxy_method.http_method
-  status_code     = "200"
+  rest_api_id = aws_api_gateway_rest_api.my_api.id
+  resource_id = aws_api_gateway_resource.proxy.id
+  http_method = aws_api_gateway_method.proxy_method.http_method
+  status_code = "200"
 
   response_models = {
     "application/json" = aws_api_gateway_model.empty_model.name
@@ -54,6 +58,7 @@ resource "aws_api_gateway_integration_response" "proxy_integration_response_200"
   resource_id     = aws_api_gateway_resource.proxy.id
   http_method     = aws_api_gateway_method.proxy_method.http_method
   status_code     = "200"
+  depends_on = [aws_api_gateway_integration.proxy_integration]  # Certifique-se que a integração é criada primeiro
 
   response_parameters = {
     "method.response.header.Content-Type" = "integration.response.header.Content-Type"
@@ -66,10 +71,10 @@ resource "aws_api_gateway_integration_response" "proxy_integration_response_200"
 
 # 201 Response
 resource "aws_api_gateway_method_response" "proxy_method_response_201" {
-  rest_api_id     = aws_api_gateway_rest_api.my_api.id
-  resource_id     = aws_api_gateway_resource.proxy.id
-  http_method     = aws_api_gateway_method.proxy_method.http_method
-  status_code     = "201"
+  rest_api_id = aws_api_gateway_rest_api.my_api.id
+  resource_id = aws_api_gateway_resource.proxy.id
+  http_method = aws_api_gateway_method.proxy_method.http_method
+  status_code = "201"
 
   response_models = {
     "application/json" = aws_api_gateway_model.empty_model.name
@@ -81,6 +86,7 @@ resource "aws_api_gateway_integration_response" "proxy_integration_response_201"
   resource_id     = aws_api_gateway_resource.proxy.id
   http_method     = aws_api_gateway_method.proxy_method.http_method
   status_code     = "201"
+  depends_on = [aws_api_gateway_integration.proxy_integration]  # Certifique-se que a integração é criada primeiro
 
   response_parameters = {
     "method.response.header.Content-Type" = "integration.response.header.Content-Type"
@@ -93,10 +99,10 @@ resource "aws_api_gateway_integration_response" "proxy_integration_response_201"
 
 # 400 Response
 resource "aws_api_gateway_method_response" "proxy_method_response_400" {
-  rest_api_id     = aws_api_gateway_rest_api.my_api.id
-  resource_id     = aws_api_gateway_resource.proxy.id
-  http_method     = aws_api_gateway_method.proxy_method.http_method
-  status_code     = "400"
+  rest_api_id = aws_api_gateway_rest_api.my_api.id
+  resource_id = aws_api_gateway_resource.proxy.id
+  http_method = aws_api_gateway_method.proxy_method.http_method
+  status_code = "400"
 
   response_models = {
     "application/json" = aws_api_gateway_model.empty_model.name
@@ -108,6 +114,7 @@ resource "aws_api_gateway_integration_response" "proxy_integration_response_400"
   resource_id     = aws_api_gateway_resource.proxy.id
   http_method     = aws_api_gateway_method.proxy_method.http_method
   status_code     = "400"
+  depends_on = [aws_api_gateway_integration.proxy_integration]  # Certifique-se que a integração é criada primeiro
 
   response_parameters = {
     "method.response.header.Content-Type" = "integration.response.header.Content-Type"
