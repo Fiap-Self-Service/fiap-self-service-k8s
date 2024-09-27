@@ -26,7 +26,7 @@ resource "aws_api_gateway_integration" "proxy_integration" {
   uri                     = "http://a7c7c084d283b4e76ab8ef40afc61122-ffa958cf9616c2e2.elb.us-east-1.amazonaws.com:3000/{proxy}"
 
   request_parameters = {
-    "integration.request.path.proxy" = "{proxy}"
+    "integration.request.path.proxy" = "method.request.path.proxy"
   }
 
   request_templates = {
