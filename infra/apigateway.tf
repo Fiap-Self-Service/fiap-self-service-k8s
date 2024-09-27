@@ -47,7 +47,10 @@ resource "aws_api_gateway_method_response" "proxy_method_response_200" {
   resource_id     = aws_api_gateway_resource.proxy.id
   http_method     = aws_api_gateway_method.proxy_method.http_method
   status_code     = "200"
-  response_model_id = aws_api_gateway_model.empty_model.id
+
+  response_models = {
+    "application/json" = aws_api_gateway_model.empty_model.name
+  }
 }
 
 resource "aws_api_gateway_integration_response" "proxy_integration_response_200" {
@@ -71,7 +74,10 @@ resource "aws_api_gateway_method_response" "proxy_method_response_201" {
   resource_id     = aws_api_gateway_resource.proxy.id
   http_method     = aws_api_gateway_method.proxy_method.http_method
   status_code     = "201"
-  response_model_id = aws_api_gateway_model.empty_model.id
+
+  response_models = {
+    "application/json" = aws_api_gateway_model.empty_model.name
+  }
 }
 
 resource "aws_api_gateway_integration_response" "proxy_integration_response_201" {
@@ -95,7 +101,10 @@ resource "aws_api_gateway_method_response" "proxy_method_response_400" {
   resource_id     = aws_api_gateway_resource.proxy.id
   http_method     = aws_api_gateway_method.proxy_method.http_method
   status_code     = "400"
-  response_model_id = aws_api_gateway_model.empty_model.id
+
+  response_models = {
+    "application/json" = aws_api_gateway_model.empty_model.name
+  }
 }
 
 resource "aws_api_gateway_integration_response" "proxy_integration_response_400" {
