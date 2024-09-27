@@ -24,6 +24,10 @@ resource "aws_api_gateway_integration" "proxy_integration" {
   type                    = "HTTP"
 
   uri = "http://a55fb585ed9f94fc399f66f3f60f5e96-913860324.us-east-1.elb.amazonaws.com:3000/{proxy}"
+
+  request_parameters = {
+    "integration.request.path.proxy" = "{proxy}"
+  }
 }
 
 # Modelo de resposta vazio
@@ -54,11 +58,7 @@ resource "aws_api_gateway_integration_response" "proxy_integration_response_200"
   resource_id     = aws_api_gateway_resource.proxy.id
   http_method     = aws_api_gateway_method.proxy_method.http_method
   status_code     = "200"
-  depends_on = [aws_api_gateway_integration.proxy_integration]  # Certifique-se que a integração é criada primeiro
-
-  response_parameters = {
-    "method.response.header.Content-Type" = "integration.response.header.Content-Type"
-  }
+  depends_on = [aws_api_gateway_integration.proxy_integration]
 
   response_templates = {
     "application/json" = "" # Não transforma o corpo
@@ -82,11 +82,7 @@ resource "aws_api_gateway_integration_response" "proxy_integration_response_201"
   resource_id     = aws_api_gateway_resource.proxy.id
   http_method     = aws_api_gateway_method.proxy_method.http_method
   status_code     = "201"
-  depends_on = [aws_api_gateway_integration.proxy_integration]  # Certifique-se que a integração é criada primeiro
-
-  response_parameters = {
-    "method.response.header.Content-Type" = "integration.response.header.Content-Type"
-  }
+  depends_on = [aws_api_gateway_integration.proxy_integration]
 
   response_templates = {
     "application/json" = "" # Não transforma o corpo
@@ -110,11 +106,7 @@ resource "aws_api_gateway_integration_response" "proxy_integration_response_400"
   resource_id     = aws_api_gateway_resource.proxy.id
   http_method     = aws_api_gateway_method.proxy_method.http_method
   status_code     = "400"
-  depends_on = [aws_api_gateway_integration.proxy_integration]  # Certifique-se que a integração é criada primeiro
-
-  response_parameters = {
-    "method.response.header.Content-Type" = "integration.response.header.Content-Type"
-  }
+  depends_on = [aws_api_gateway_integration.proxy_integration]
 
   response_templates = {
     "application/json" = "" # Não transforma o corpo
