@@ -30,7 +30,7 @@ resource "aws_apigatewayv2_route" "get_echo" {
   api_id = aws_apigatewayv2_api.apifiap.id
 
   route_key = "ANY /totem/{proxy+}"
-  target    = "integrations/${aws_apigatewayv2_integration.eks.id}"
+  target    = "integrations/${aws_apigatewayv2_integration.eks.id}/api"
 }
 
 output "hello_base_url" {
