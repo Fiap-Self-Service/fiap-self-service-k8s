@@ -23,11 +23,15 @@ resource "aws_api_gateway_integration" "proxy_integration" {
   integration_http_method = "ANY"
   type                    = "HTTP"
   
-  # Incluindo a porta 3000 no URI
   uri                     = "http://a7c7c084d283b4e76ab8ef40afc61122-ffa958cf9616c2e2.elb.us-east-1.amazonaws.com:3000/{proxy}"
 
   request_parameters = {
-    "integration.request.path.proxy" = "{proxy}"
+    "integration.request.path.proxy" = "{proxy}"  # Esse parâmetro deve estar correto
+  }
+
+  # Adicione esta linha para desativar a verificação de parâmetro
+  request_templates = {
+    "application/json" = ""
   }
 }
 
