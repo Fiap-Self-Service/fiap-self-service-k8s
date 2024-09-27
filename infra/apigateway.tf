@@ -23,7 +23,7 @@ resource "aws_api_gateway_integration" "proxy_integration" {
   integration_http_method = "ANY"
   type                    = "HTTP"
 
-  uri                     = "http://a7c7c084d283b4e76ab8ef40afc61122-627510962.us-east-1.elb.amazonaws.com:3000/{proxy}"
+  uri                     = "http://a55fb585ed9f94fc399f66f3f60f5e96-913860324.us-east-1.elb.amazonaws.com:3000/{proxy}"
 }
 
 resource "aws_api_gateway_deployment" "my_api_deployment" {
