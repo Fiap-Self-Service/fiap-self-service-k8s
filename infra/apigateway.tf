@@ -1,3 +1,11 @@
+# Criar o VPC Endpoint para o API Gateway se integrar com Load balancer
+resource "aws_vpc_endpoint" "apigateway" {
+  vpc_id            = module.vpc.vpc_id
+  service_name      = "Link VPC APIGatewayVPC"
+  subnet_ids = concat(module.vpc.private_subnets, module.vpc.public_subnets)
+  security_group_ids = [aws_security_group.eks_security_group.id]
+}
+
 # API Gateway para acesso a aplicação
 resource "aws_apigatewayv2_api" "fiap_api" {
   name          = "Fiap Self Service API"
