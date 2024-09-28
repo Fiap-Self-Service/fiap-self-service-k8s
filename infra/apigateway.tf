@@ -18,9 +18,11 @@ resource "aws_apigatewayv2_route" "example" {
   target = "integrations/${aws_apigatewayv2_integration.example.id}"
 }
 resource "aws_api_gateway_deployment" "fiap_api_deployment" {
-  rest_api_id = aws_api_gateway_rest_api.example.id
-  stage_name  = "v1"
+  api_id      = aws_apigatewayv2_api.example.id
+  name        = "v1"
+  auto_deploy = true
 }
+
 
 output "invoke_url" {
   value = "${aws_api_gateway_deployment.fiap_api_deployment.invoke_url}"
