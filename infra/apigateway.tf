@@ -1,33 +1,24 @@
-resource "aws_api_gateway_rest_api" "fiap_api" {
-  name        = "Fiap Self Service API"
-  description = "Fiap API"
+resource "aws_apigatewayv2_api" "example" {
+  name          = "example-http-api"
+  protocol_type = "HTTP"
 }
 
-resource "aws_api_gateway_resource" "default" {
-  rest_api_id = aws_api_gateway_rest_api.fiap_api.id
-  parent_id   = aws_api_gateway_rest_api.fiap_api.root_resource_id
-  path_part   = "$default"
+resource "aws_apigatewayv2_integration" "example" {
+  api_id           = aws_apigatewayv2_api.example.id
+  integration_type = "HTTP_PROXY"
+
+  integration_method = "ANY"
+  integration_uri    = "https://example.com/{proxy}"
 }
 
-resource "aws_api_gateway_method" "default_method" {
-  rest_api_id   = aws_api_gateway_rest_api.fiap_api.id
-  resource_id   = aws_api_gateway_resource.default.id
-  http_method   = "ANY"  # Aceita todos os métodos HTTP
-  authorization = "NONE"
+resource "aws_apigatewayv2_route" "example" {
+  api_id    = aws_apigatewayv2_api.example.id
+  route_key = "ANY /example/{proxy+}"
+
+  target = "integrations/${aws_apigatewayv2_integration.example.id}"
 }
-
-resource "aws_api_gateway_integration" "http_proxy_integration" {
-  rest_api_id = aws_api_gateway_rest_api.fiap_api.id
-  resource_id = aws_api_gateway_resource.default.id
-  http_method = aws_api_gateway_method.default_method.http_method
-
-  type                     = "HTTP_PROXY"
-  uri                      = "http://a55fb585ed9f94fc399f66f3f60f5e96-913860324.us-east-1.elb.amazonaws.com:3000"
-  connection_type          = "INTERNET"
-}
-
 resource "aws_api_gateway_deployment" "fiap_api_deployment" {
-  rest_api_id = aws_api_gateway_rest_api.fiap_api.id
+  rest_api_id = aws_api_gateway_rest_api.example.id
   stage_name  = "v1"
 }
 
