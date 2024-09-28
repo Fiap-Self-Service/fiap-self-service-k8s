@@ -1,8 +1,7 @@
 # VPC Link para integração do load balancer interno com api gateway
-resource "aws_apigatewayv2_vpc_link" "fiap_vpc_link" {
+resource "aws_api_gateway_vpc_link" "fiap_vpc_link" {
   name        = "FiapVpcLink"
-  security_group_ids = [aws_security_group.eks_security_group.id]
-  subnet_ids  = concat(module.vpc.private_subnets, module.vpc.public_subnets)
+  target_arns = [var.url_load_balance]
 }
 
 # API Gateway para acesso a aplicação
