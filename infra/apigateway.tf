@@ -8,12 +8,12 @@ resource "aws_apigatewayv2_integration" "example" {
   integration_type = "HTTP_PROXY"
 
   integration_method = "ANY"
-  integration_uri    = "http://a55fb585ed9f94fc399f66f3f60f5e96-913860324.us-east-1.elb.amazonaws.com:3000/{proxy}"  # Substitua pela sua URL
+  integration_uri    = "http://a55fb585ed9f94fc399f66f3f60f5e96-913860324.us-east-1.elb.amazonaws.com:3000"  # Substitua pela sua URL
 }
 
 resource "aws_apigatewayv2_route" "example" {
   api_id    = aws_apigatewayv2_api.example.id
-  route_key = "ANY /example/{proxy+}"
+  route_key = "$default"
 
   target = "integrations/${aws_apigatewayv2_integration.example.id}"
 }
