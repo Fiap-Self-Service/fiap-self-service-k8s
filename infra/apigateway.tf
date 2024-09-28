@@ -1,7 +1,8 @@
 # VPC Link para integração do load balancer interno com api gateway
-resource "aws_api_gateway_vpc_link" "fiap_vpc_link" {
+resource "aws_apigatewayv2_vpc_link" "fiap_vpc_link" {
   name        = "FiapVpcLink"
-  target_arns = [var.url_load_balance]
+  security_group_ids = [aws_security_group.eks_security_group.id]
+  subnet_ids  = concat(module.vpc.private_subnets, module.vpc.public_subnets)
 }
 
 # API Gateway para acesso a aplicação
@@ -25,7 +26,7 @@ resource "aws_apigatewayv2_integration" "fiap_api" {
 # Rota default que serve como proxy, redirecionando a chamada do API Gateway para os endpoints expostos pelo load balance
 resource "aws_apigatewayv2_route" "fiap_api" {
   api_id    = aws_apigatewayv2_api.fiap_api.id
-  route_key = "ANY /{proxy+}"
+  route_key = "$default"
 
   target = "integrations/${aws_apigatewayv2_integration.fiap_api.id}"
 }
