@@ -4,6 +4,10 @@ resource "aws_vpc_endpoint" "apigateway" {
   service_name      = "com.amazonaws.us-east-1.execute-api"
   subnet_ids = module.vpc.private_subnets
   security_group_ids = [aws_security_group.eks_security_group.id]
+
+  depends_on = [
+    module.vpc
+  ]
 }
 
 # API Gateway para acesso a aplicação
