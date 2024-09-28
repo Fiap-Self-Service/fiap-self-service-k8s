@@ -1,3 +1,4 @@
+# Cluster EKS, rodando na VPC criada no arquivo vpc.tf
 resource "aws_eks_cluster" "k8s_cluster" {
   name     = var.cluster_name
   role_arn = var.iam_role_arn
@@ -20,6 +21,7 @@ data "aws_eks_cluster_auth" "k8s_cluster_auth" {
   name = aws_eks_cluster.k8s_cluster.name
 }
 
+# Nós disponibilizados para o cluster kubernates
 resource "aws_eks_node_group" "k8s_node_group" {
   cluster_name    = var.cluster_name
   node_group_name = "k8s_node_group"
@@ -41,6 +43,7 @@ resource "aws_eks_node_group" "k8s_node_group" {
   }
 }
 
+# Grupo de segurança para acesso a protocolos e portas dos serviços
 resource "aws_security_group" "eks_security_group" {
   vpc_id = module.vpc.vpc_id
   

@@ -21,3 +21,7 @@ variable "zone_az2" {
 variable "iam_role_arn" {
   type = string
 }
+
+variable "url_load_balance" {
+  type = string
+}

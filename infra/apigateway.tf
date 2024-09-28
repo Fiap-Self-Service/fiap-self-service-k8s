@@ -1,29 +1,33 @@
-resource "aws_apigatewayv2_api" "example" {
-  name          = "example-http-api"
+# API Gateway para acesso a aplicação
+resource "aws_apigatewayv2_api" "fiap_api" {
+  name          = "Fiap Self Service API"
   protocol_type = "HTTP"
 }
 
-resource "aws_apigatewayv2_integration" "example" {
-  api_id           = aws_apigatewayv2_api.example.id
+# Integracao com load balance do EKS
+resource "aws_apigatewayv2_integration" "fiap_api" {
+  api_id           = aws_apigatewayv2_api.fiap_api.id
   integration_type = "HTTP_PROXY"
 
   integration_method = "ANY"
-  integration_uri    = "http://a55fb585ed9f94fc399f66f3f60f5e96-913860324.us-east-1.elb.amazonaws.com:3000"  # Substitua pela sua URL
+  integration_uri    = var.url_load_balance
 }
 
-resource "aws_apigatewayv2_route" "example" {
-  api_id    = aws_apigatewayv2_api.example.id
+# Rota default que serve como proxy, redirecionando a chamada do API Gateway para os endpoints expostos pelo load balance
+resource "aws_apigatewayv2_route" "fiap_api" {
+  api_id    = aws_apigatewayv2_api.fiap_api.id
   route_key = "$default"
 
-  target = "integrations/${aws_apigatewayv2_integration.example.id}"
+  target = "integrations/${aws_apigatewayv2_integration.fiap_api.id}"
 }
 
-resource "aws_apigatewayv2_stage" "example" {
-  api_id      = aws_apigatewayv2_api.example.id
+# Stage (prefixo, anterior ao path/endpoint que será acionado pelo load balance )
+resource "aws_apigatewayv2_stage" "fiap_api" {
+  api_id      = aws_apigatewayv2_api.fiap_api.id
   name        = "v1"
   auto_deploy = true
 }
 
 output "invoke_url" {
-  value = "${aws_apigatewayv2_stage.example.invoke_url}"
+  value = "${aws_apigatewayv2_stage.fiap_api.invoke_url}"
 }
