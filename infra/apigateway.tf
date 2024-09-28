@@ -18,9 +18,6 @@ resource "aws_apigatewayv2_integration" "fiap_api" {
 
   integration_method = "ANY"
   integration_uri    = var.url_load_balance
-
-  connection_type    = "VPC_LINK"
-  connection_id      = aws_apigatewayv2_vpc_link.fiap_vpc_link.id
 }
 
 # Rota default que serve como proxy, redirecionando a chamada do API Gateway para os endpoints expostos pelo load balance
