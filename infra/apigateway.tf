@@ -3,7 +3,7 @@ resource "aws_vpc_endpoint" "apigateway" {
   vpc_id            = module.vpc.vpc_id
   service_name      = "com.amazonaws.us-east-1.execute-api"
   vpc_endpoint_type = "Interface"
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids = concat(module.vpc.private_subnets, module.vpc.public_subnets)
   security_group_ids = [aws_security_group.eks_security_group.id]
 
   depends_on = [
