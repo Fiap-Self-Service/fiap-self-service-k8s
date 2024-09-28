@@ -24,8 +24,6 @@ resource "aws_api_gateway_integration" "http_proxy_integration" {
   type                     = "HTTP_PROXY"
   uri                      = "http://a55fb585ed9f94fc399f66f3f60f5e96-913860324.us-east-1.elb.amazonaws.com:3000"
   connection_type          = "INTERNET"
-  request_parameters       = {}
-  request_templates        = {}
 }
 
 resource "aws_api_gateway_deployment" "fiap_api_deployment" {
