@@ -8,7 +8,7 @@ resource "aws_apigatewayv2_integration" "example" {
   integration_type = "HTTP_PROXY"
 
   integration_method = "ANY"
-  integration_uri    = "https://example.com/{proxy}"
+  integration_uri    = "http://a55fb585ed9f94fc399f66f3f60f5e96-913860324.us-east-1.elb.amazonaws.com:3000/{proxy}"  # Substitua pela sua URL
 }
 
 resource "aws_apigatewayv2_route" "example" {
@@ -17,13 +17,13 @@ resource "aws_apigatewayv2_route" "example" {
 
   target = "integrations/${aws_apigatewayv2_integration.example.id}"
 }
-resource "aws_api_gateway_deployment" "fiap_api_deployment" {
+
+resource "aws_apigatewayv2_stage" "example" {
   api_id      = aws_apigatewayv2_api.example.id
   name        = "v1"
   auto_deploy = true
 }
 
-
 output "invoke_url" {
-  value = "${aws_api_gateway_deployment.fiap_api_deployment.invoke_url}"
+  value = "${aws_apigatewayv2_stage.example.invoke_url}"
 }
