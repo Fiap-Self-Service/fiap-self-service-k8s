@@ -1,14 +1,8 @@
-# Criar o VPC Endpoint para o API Gateway se integrar com Load balancer
-resource "aws_vpc_endpoint" "apigateway" {
-  vpc_id            = module.vpc.vpc_id
-  service_name      = "com.amazonaws.us-east-1.execute-api"
-  vpc_endpoint_type = "Interface"
-  subnet_ids = concat(module.vpc.private_subnets, module.vpc.public_subnets)
+# VPC Link para integração do load balancer interno com api gateway
+resource "aws_apigatewayv2_vpc_link" "fiap_vpc_link" {
+  name        = "FiapVpcLink"
   security_group_ids = [aws_security_group.eks_security_group.id]
-
-  depends_on = [
-    module.vpc
-  ]
+  subnet_ids  = concat(module.vpc.private_subnets, module.vpc.public_subnets)
 }
 
 # API Gateway para acesso a aplicação
@@ -24,6 +18,9 @@ resource "aws_apigatewayv2_integration" "fiap_api" {
 
   integration_method = "ANY"
   integration_uri    = var.url_load_balance
+
+  connection_type    = "VPC_LINK"
+  connection_id      = aws_apigatewayv2_vpc_link.fiap_vpc_link.id
 }
 
 # Rota default que serve como proxy, redirecionando a chamada do API Gateway para os endpoints expostos pelo load balance
