@@ -25,6 +25,10 @@ resource "aws_apigatewayv2_route" "fiap_api" {
   api_id    = aws_apigatewayv2_api.fiap_api.id
   route_key = "$default"
 
+  # Vinculando o Authorizer à Rota
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.cognito_authorizer.id
+
   target = "integrations/${aws_apigatewayv2_integration.fiap_api.id}"
 }
 
@@ -33,6 +37,18 @@ resource "aws_apigatewayv2_stage" "fiap_api" {
   api_id      = aws_apigatewayv2_api.fiap_api.id
   name        = "v1"
   auto_deploy = true
+}
+
+# Criação do Authorizer
+resource "aws_apigatewayv2_authorizer" "cognito_authorizer" {
+  api_id       = aws_apigatewayv2_api.fiap_api.id
+  name         = "CognitoAuthorizer"
+  authorizer_type = "REQUEST"
+  
+  identity_sources = ["$request.header.Authorization"]
+
+  # Referenciando o Cognito User Pool
+  authorizer_uri = "arn:aws:cognito:us-east-1:125427248349:userpool/${aws_cognito_user_pool.user_pool.id}"
 }
 
 output "invoke_url" {
