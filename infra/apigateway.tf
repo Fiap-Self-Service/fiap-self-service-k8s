@@ -43,12 +43,13 @@ resource "aws_apigatewayv2_stage" "fiap_api" {
 resource "aws_apigatewayv2_authorizer" "cognito_authorizer" {
   api_id       = aws_apigatewayv2_api.fiap_api.id
   name         = "CognitoAuthorizer"
-  authorizer_type = "REQUEST"
+  authorizer_type = "JWT"
   
   identity_sources = ["$request.header.Authorization"]
 
-  # Referenciando o Cognito User Pool
-  authorizer_uri = "arn:aws:cognito-idp:us-east-1:125427248349:userpool/${aws_cognito_user_pool.user_pool.id}"
+  jwt_configuration {
+    issuer   = "https://cognito-idp.us-east-1.amazonaws.com/${aws_cognito_user_pool.user_pool.id}"
+  }
 }
 
 output "invoke_url" {
