@@ -28,11 +28,6 @@ resource "aws_cognito_user_pool" "user_pool" {
     mutable  = true
   }
 
-  # Definindo um limite de usuários para economizar
-  lambda_config {
-    pre_sign_up = "1"
-  }
-
   # Limitar as configurações de recursos
   admin_create_user_config {
     allow_admin_create_user_only = true
