@@ -48,7 +48,7 @@ resource "aws_apigatewayv2_authorizer" "cognito_authorizer" {
   identity_sources = ["$request.header.Authorization"]
 
   # Referenciando o Cognito User Pool
-  authorizer_uri = "arn:aws:cognito:us-east-1:125427248349:userpool/${aws_cognito_user_pool.user_pool.id}"
+  authorizer_uri = "arn:aws:cognito-idp:us-east-1:125427248349:userpool/${aws_cognito_user_pool.user_pool.id}"
 }
 
 output "invoke_url" {
