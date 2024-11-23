@@ -22,6 +22,6 @@ variable "iam_role_arn" {
   type = string
 }
 
-variable "url_load_balance" {
+variable "url_load_balance_clientes" {
   type = string
 }
