@@ -17,13 +17,13 @@ resource "aws_apigatewayv2_integration" "fiap_api_clientes" {
   integration_type = "HTTP_PROXY"
 
   integration_method = "ANY"
-  integration_uri    = "${var.url_load_balance_clientes}/clientes/${proxy}"
+  integration_uri    = var.url_load_balance_clientes
 }
 
 # Rota default que serve como proxy, redirecionando a chamada do API Gateway para os endpoints expostos pelo load balance
 resource "aws_apigatewayv2_route" "fiap_api_clientes" {
   api_id    = aws_apigatewayv2_api.fiap_api.id
-  route_key = "ANY /clientes/{proxy+}"
+  route_key = "ANY /fiap-clientes-api/{proxy+}"
 
 #   # Vinculando o Authorizer à Rota
 #   authorization_type = "JWT"
@@ -35,7 +35,7 @@ resource "aws_apigatewayv2_route" "fiap_api_clientes" {
 # Stage (prefixo, anterior ao path/endpoint que será acionado pelo load balance )
 resource "aws_apigatewayv2_stage" "fiap_api" {
   api_id      = aws_apigatewayv2_api.fiap_api.id
-  name        = "v1"
+  name        = "$default"
   auto_deploy = true
 }
 
