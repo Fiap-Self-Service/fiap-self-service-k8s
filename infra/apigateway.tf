@@ -4,6 +4,13 @@ resource "aws_apigatewayv2_api" "fiap_api" {
   protocol_type = "HTTP"
 }
 
+# VPC Link para integração do load balancer interno com api gateway
+resource "aws_apigatewayv2_vpc_link" "fiap_vpc_link" {
+  name        = "FiapVpcLink"
+  security_group_ids = [aws_security_group.eks_security_group.id]
+  subnet_ids  = concat(module.vpc.private_subnets, module.vpc.public_subnets)
+}
+
 # Integracao com load balance do EKS
 resource "aws_apigatewayv2_integration" "fiap_api_clientes" {
   api_id           = aws_apigatewayv2_api.fiap_api.id
