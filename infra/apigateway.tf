@@ -17,7 +17,7 @@ resource "aws_apigatewayv2_integration" "fiap_api_clientes" {
   integration_type = "HTTP_PROXY"
 
   integration_method = "ANY"
-  integration_uri    = var.url_load_balance_clientes
+  integration_uri    = "${var.url_load_balance_clientes}/clientes/${proxy}"
 }
 
 # Rota default que serve como proxy, redirecionando a chamada do API Gateway para os endpoints expostos pelo load balance
