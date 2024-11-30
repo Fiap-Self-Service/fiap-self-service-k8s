@@ -47,7 +47,7 @@ resource "aws_apigatewayv2_integration" "fiap_api_pedidos" {
 # Rota default que serve como proxy, redirecionando a chamada do API Gateway para os endpoints expostos pelo load balance
 resource "aws_apigatewayv2_route" "fiap_api_clientes" {
   api_id    = aws_apigatewayv2_api.fiap_api.id
-  route_key = "ANY /clientes/{proxy+}"
+  route_key = "ANY /fiap-clientes-api/{proxy+}"
 
 #   # Vinculando o Authorizer à Rota
 #   authorization_type = "JWT"
@@ -58,21 +58,21 @@ resource "aws_apigatewayv2_route" "fiap_api_clientes" {
 
 resource "aws_apigatewayv2_route" "fiap_api_produtos" {
   api_id    = aws_apigatewayv2_api.fiap_api.id
-  route_key = "ANY /produtos/{proxy+}"
+  route_key = "ANY /fiap-produtos-api/{proxy+}"
 
   target = "integrations/${aws_apigatewayv2_integration.fiap_api_produtos.id}"
 }
 
 resource "aws_apigatewayv2_route" "fiap_api_pagamentos" {
   api_id    = aws_apigatewayv2_api.fiap_api.id
-  route_key = "ANY /pagamentos/{proxy+}"
+  route_key = "ANY /fiap-pagamentos-api/{proxy+}"
 
   target = "integrations/${aws_apigatewayv2_integration.fiap_api_pagamentos.id}"
 }
 
 resource "aws_apigatewayv2_route" "fiap_api_pedidos" {
   api_id    = aws_apigatewayv2_api.fiap_api.id
-  route_key = "ANY /pedidos/{proxy+}"
+  route_key = "ANY /fiap-pedidos-api/{proxy+}"
 
   target = "integrations/${aws_apigatewayv2_integration.fiap_api_pedidos.id}"
 }
