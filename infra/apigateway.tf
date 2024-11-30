@@ -80,7 +80,7 @@ resource "aws_apigatewayv2_route" "fiap_api_pedidos" {
 # Stage (prefixo, anterior ao path/endpoint que será acionado pelo load balance )
 resource "aws_apigatewayv2_stage" "fiap_api" {
   api_id      = aws_apigatewayv2_api.fiap_api.id
-  name        = "$default"
+  name        = "v1"
   auto_deploy = true
 }
 
