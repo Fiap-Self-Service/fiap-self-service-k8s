@@ -20,16 +20,61 @@ resource "aws_apigatewayv2_integration" "fiap_api_clientes" {
   integration_uri    = var.url_load_balance_clientes
 }
 
+resource "aws_apigatewayv2_integration" "fiap_api_produtos" {
+  api_id           = aws_apigatewayv2_api.fiap_api.id
+  integration_type = "HTTP_PROXY"
+
+  integration_method = "ANY"
+  integration_uri    = var.url_load_balance_produtos
+}
+
+resource "aws_apigatewayv2_integration" "fiap_api_pagamentos" {
+  api_id           = aws_apigatewayv2_api.fiap_api.id
+  integration_type = "HTTP_PROXY"
+
+  integration_method = "ANY"
+  integration_uri    = var.url_load_balance_pagamentos
+}
+
+resource "aws_apigatewayv2_integration" "fiap_api_pedidos" {
+  api_id           = aws_apigatewayv2_api.fiap_api.id
+  integration_type = "HTTP_PROXY"
+
+  integration_method = "ANY"
+  integration_uri    = var.url_load_balance_pedidos
+}
+
 # Rota default que serve como proxy, redirecionando a chamada do API Gateway para os endpoints expostos pelo load balance
 resource "aws_apigatewayv2_route" "fiap_api_clientes" {
   api_id    = aws_apigatewayv2_api.fiap_api.id
-  route_key = "ANY /fiap-clientes-api/{proxy+}"
+  route_key = "ANY /clientes/{proxy+}"
 
 #   # Vinculando o Authorizer à Rota
 #   authorization_type = "JWT"
 #   authorizer_id      = aws_apigatewayv2_authorizer.cognito_authorizer.id
 
   target = "integrations/${aws_apigatewayv2_integration.fiap_api_clientes.id}"
+}
+
+resource "aws_apigatewayv2_route" "fiap_api_produtos" {
+  api_id    = aws_apigatewayv2_api.fiap_api.id
+  route_key = "/produtos/{proxy+}"
+
+  target = "integrations/${aws_apigatewayv2_integration.fiap_api_produtos.id}"
+}
+
+resource "aws_apigatewayv2_route" "fiap_api_pagamentos" {
+  api_id    = aws_apigatewayv2_api.fiap_api.id
+  route_key = "/pagamentos/{proxy+}"
+
+  target = "integrations/${aws_apigatewayv2_integration.fiap_api_pagamentos.id}"
+}
+
+resource "aws_apigatewayv2_route" "fiap_api_pedidos" {
+  api_id    = aws_apigatewayv2_api.fiap_api.id
+  route_key = "/pedidos/{proxy+}"
+
+  target = "integrations/${aws_apigatewayv2_integration.fiap_api_pedidos.id}"
 }
 
 # Stage (prefixo, anterior ao path/endpoint que será acionado pelo load balance )

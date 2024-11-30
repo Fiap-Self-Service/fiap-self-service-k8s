@@ -25,3 +25,15 @@ variable "iam_role_arn" {
 variable "url_load_balance_clientes" {
   type = string
 }
+
+variable "url_load_balance_produtos" {
+  type = string
+}
+
+variable "url_load_balance_pagamentos" {
+  type = string
+}
+
+variable "url_load_balance_pedidos" {
+  type = string
+}
